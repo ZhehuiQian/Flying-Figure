@@ -1,0 +1,10 @@
+﻿  Main.cpp
+  Entity.cpp
+  DXCore.cpp
+  Generating Code...
+  Compiling...
+  Game.cpp
+e:\academic\rit_spring 2017\ggp\final project\shadow\dx11starter\game.cpp(138): warning C4305: 'argument': truncation from 'double' to 'float'
+  Generating Code...
+  DX11Starter.vcxproj -> E:\Academic\RIT_Spring 2017\GGP\Final Project\Shadow\DX11Starter\Debug\DX11Starter.exe
+  DX11Starter.vcxproj -> E:\Academic\RIT_Spring 2017\GGP\Final Project\Shadow\DX11Starter\Debug\DX11Starter.pdb (Full PDB)
