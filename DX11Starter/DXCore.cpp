@@ -264,74 +264,74 @@ HRESULT DXCore::InitDirectX()
 	viewport.MaxDepth	= 1.0f;
 	context->RSSetViewports(1, &viewport);
 
-
-	/*Final project-shadow mapping*/
-
-	ID3D11Texture2D* shadowMapTexture;
-
-	// refers to this tutorial: https://takinginitiative.wordpress.com/2011/05/15/directx10-tutorial-10-shadow-mapping/
-	/*
-	width = shadow map width
-	height = shaow map height
-	*/
-
-	// Set up the description of the shadow map texture
-	D3D11_TEXTURE2D_DESC shadowMapTexDesc = {};
-	shadowMapTexDesc.Width = width;
-	shadowMapTexDesc.Height = height;
-	shadowMapTexDesc.MipLevels = 1;
-	shadowMapTexDesc.ArraySize = 1;
-	shadowMapTexDesc.Format = DXGI_FORMAT_R32_TYPELESS;
-	shadowMapTexDesc.SampleDesc.Count = 1;
-	shadowMapTexDesc.SampleDesc.Quality = 0;
-	shadowMapTexDesc.Usage = D3D11_USAGE_DEFAULT;
-	shadowMapTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-	shadowMapTexDesc.CPUAccessFlags = 0;
-	shadowMapTexDesc.MiscFlags = 0;
-
-	// create the depth stencil view description
-	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
-	descDSV.Format = DXGI_FORMAT_D32_FLOAT; // different from the demo
-	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	descDSV.Texture2D.MipSlice = 0;
-
-	// create shader resource view description
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MipLevels = shadowMapTexDesc.MipLevels;
-	srvDesc.Texture2D.MostDetailedMip = 0;
-
-	// create texture and depth/resource views
-	if (FAILED(device->CreateTexture2D(&shadowMapTexDesc, NULL, &shadowMapTexture))) return false;
-	if (FAILED(device->CreateDepthStencilView(shadowMapTexture, &descDSV, &shadowMapDepthView))) return false;
-	if (FAILED(device->CreateShaderResourceView(shadowMapTexture, &srvDesc, &shadowMapSRView))) return false;
-	
-	// create a new viewport with the dimension s of your shadow map and bind that viewport when rendering 
-	// to the shadow map
-	// -------fill below---------
-
-
-	shadowMapTexture->Release();
-
-	// create shadow map
-	//***************************************************************************
-
-	// set render targets
-	context->OMSetRenderTargets(0, 0, shadowMapDepthView);
-	context->ClearDepthStencilView(shadowMapDepthView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-	//-------------------------------------------------
-	//RENDER SCENE
-	//-------------------------------------------------
-
-	//Render final scene
-	//***************************************************************************
-
-	// set render targets
-	context->OMSetRenderTargets(1,&)
-
-	/*Final project-shadow mapping*/
+//
+//	/*Final project-shadow mapping*/
+//
+//	ID3D11Texture2D* shadowMapTexture;
+//
+//	// refers to this tutorial: https://takinginitiative.wordpress.com/2011/05/15/directx10-tutorial-10-shadow-mapping/
+//	/*
+//	width = shadow map width
+//	height = shaow map height
+//	*/
+//
+//	// Set up the description of the shadow map texture
+//	D3D11_TEXTURE2D_DESC shadowMapTexDesc = {};
+//	shadowMapTexDesc.Width = width;
+//	shadowMapTexDesc.Height = height;
+//	shadowMapTexDesc.MipLevels = 1;
+//	shadowMapTexDesc.ArraySize = 1;
+//	shadowMapTexDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+//	shadowMapTexDesc.SampleDesc.Count = 1;
+//	shadowMapTexDesc.SampleDesc.Quality = 0;
+//	shadowMapTexDesc.Usage = D3D11_USAGE_DEFAULT;
+//	shadowMapTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+//	shadowMapTexDesc.CPUAccessFlags = 0;
+//	shadowMapTexDesc.MiscFlags = 0;
+//
+//	// create the depth stencil view description
+//	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+//	descDSV.Format = DXGI_FORMAT_D32_FLOAT; // different from the demo
+//	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+//	descDSV.Texture2D.MipSlice = 0;
+//
+//	// create shader resource view description
+//	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+//	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+//	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+//	srvDesc.Texture2D.MipLevels = shadowMapTexDesc.MipLevels;
+//	srvDesc.Texture2D.MostDetailedMip = 0;
+//
+//	// create texture and depth/resource views
+//	if (FAILED(device->CreateTexture2D(&shadowMapTexDesc, NULL, &shadowMapTexture))) return false;
+//	if (FAILED(device->CreateDepthStencilView(shadowMapTexture, &descDSV, &shadowMapDepthView))) return false;
+//	if (FAILED(device->CreateShaderResourceView(shadowMapTexture, &srvDesc, &shadowMapSRView))) return false;
+//	
+//	// create a new viewport with the dimensions of your shadow map and bind that viewport when rendering 
+//	// to the shadow map
+//	// -------fill below---------
+//
+//
+//	shadowMapTexture->Release();
+//
+//	// create shadow map
+//	//***************************************************************************
+//
+//	// set render targets
+//	context->OMSetRenderTargets(0, 0, shadowMapDepthView);
+//	context->ClearDepthStencilView(shadowMapDepthView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+//
+//	//-------------------------------------------------
+//	//RENDER SCENE
+//	//-------------------------------------------------
+//
+//	//Render final scene
+//	//***************************************************************************
+//
+//	// set render targets
+////	context->OMSetRenderTargets(1,&)
+//
+//	/*Final project-shadow mapping*/
 
 
 	// Return the "everything is ok" HRESULT value

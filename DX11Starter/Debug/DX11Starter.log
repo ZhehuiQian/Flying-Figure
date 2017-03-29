@@ -1,10 +1,4 @@
-﻿  Main.cpp
-  Entity.cpp
-  DXCore.cpp
-  Generating Code...
-  Compiling...
-  Game.cpp
-e:\academic\rit_spring 2017\ggp\final project\shadow\dx11starter\game.cpp(138): warning C4305: 'argument': truncation from 'double' to 'float'
-  Generating Code...
-  DX11Starter.vcxproj -> E:\Academic\RIT_Spring 2017\GGP\Final Project\Shadow\DX11Starter\Debug\DX11Starter.exe
-  DX11Starter.vcxproj -> E:\Academic\RIT_Spring 2017\GGP\Final Project\Shadow\DX11Starter\Debug\DX11Starter.pdb (Full PDB)
+﻿  compilation object save succeeded; see E:\Git Repo\Shadow\DX11Starter\Debug\PS_Shadow.cso
+E:\Git Repo\Shadow\DX11Starter\VS_Shadow.hlsl(76,2-14): error X3000: unrecognized identifier 'deviceContext'
+  
+  compilation failed; no code produced

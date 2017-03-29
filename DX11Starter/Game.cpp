@@ -81,6 +81,12 @@ Game::~Game()
 		delete sound;
 	}*/
 
+	//clean up the shadow mapping stuffs
+	shadowMapTexture->Release();
+	DSV_Shadow->Release();
+	SRV_Shadow->Release();
+	RS_Shadow->Release();
+
 
 }
 
@@ -121,6 +127,31 @@ void Game::Init()
 	device->CreateSamplerState(&sampDesc, &SampleState);
 	// -------------------------
 
+	// shadow mapping stuff
+
+	// Set up the description of the shadow map texture
+	D3D11_TEXTURE2D_DESC shadowMapTexDesc = {};
+	shadowMapTexDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+	shadowMapTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+
+	// Set up the depth stencil view description --> for using this texture "as a depth buffer"
+	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+	descDSV.Format = DXGI_FORMAT_D32_FLOAT;
+
+	// Set up the shader resource view description --> for sampling from the texture in a pixel shader
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+
+	// using the description above to create the texture, depth stencil view and the shader resource view
+	device->CreateTexture2D(&shadowMapTexDesc, NULL, &shadowMapTexture);
+	device->CreateDepthStencilView(shadowMapTexture, &descDSV, &DSV_Shadow);
+	device->CreateShaderResourceView(shadowMapTexture, &srvDesc, &SRV_Shadow);
+
+	// finishing the shadow mapping depth buffer thing??
+
+
+
+
 	CreateMaterial();
 	CreateMeshes();
 	CreateEntities(); // the third assignment
@@ -128,6 +159,25 @@ void Game::Init()
 	// geometric primitives (points, lines or triangles) we want to draw.  
 	// Essentially: "What kind of shape should the GPU draw with our data?"
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	// shadow mappign stuff-->setting render states
+	// set null render target and clear the depth buffer
+	context->OMSetRenderTargets(0, 0, DSV_Shadow);  
+	context->ClearDepthStencilView(DSV_Shadow, D3D11_CLEAR_DEPTH, 1.0f, 0); // clear the depth buffer
+	// Set up the rasterize state
+	D3D11_RASTERIZER_DESC rsDesc = {};
+	device->CreateRasterizerState(&rsDesc, &RS_Shadow);
+	// Set a viewport
+	D3D11_VIEWPORT viewport = {};
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = 1024; // width/height should be equal to shadow map size
+	viewport.Height = 1024;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	context->RSSetViewports(1, &viewport);
+
 
 	/*
 	directionalLight.AmbientColor = XMFLOAT4(0.1, 0.1, 0.1, 0.1);
@@ -137,7 +187,7 @@ void Game::Init()
 
 	directionalLight2.AmbientColor = XMFLOAT4(0.1, 0.1, 0.1, 0.1);
 	directionalLight2.DiffuseColor = XMFLOAT4(1, 1, 0, 1);  // yellow
-	directionalLight2.Direction = XMFLOAT3(-1, -1, 0);
+	directionalLight2.Direction = XMFLOAT3(0, -1, 0);
 
 	/*
 	pointLight.Color = XMFLOAT4(1,0.1f,0.1f,1);  
@@ -176,6 +226,13 @@ void Game::LoadShaders()
 
 	// Checking both paths is the easiest way to ensure both 
 	// scenarios work correctly, although others exist
+
+	// shadow mapping stuff
+	VS_Shadow = new SimpleVertexShader(device, context);
+	if (!vertexShader->LoadShaderFile(L"Debug/VS_Shadow.cso"))
+		vertexShader->LoadShaderFile(L"VS_Shadow.cso");
+
+	// ??? PS_Shadow = new SimplePixelShader(device, context);  // no pixel shader??
 }
 
 void Game::CreateCamera()
@@ -189,6 +246,7 @@ void Game::CreateMaterial()
 	// pass in the texture and sampler state you have made above before drawing it
 	ma_metal = new Material(pixelShader,vertexShader, SRV_Metal, SampleState);
 	ma_concrete = new Material(pixelShader, vertexShader, SRV_Concrete, SampleState);
+
 }
 
 
@@ -448,6 +506,29 @@ void Game::Draw(float deltaTime, float totalTime)
 		//XMStoreFloat3(&camerapos, c->GetCameraPosition());
 		//pixelShader->SetFloat3("cameraPosition", camerapos);
 
+		// for shadow mapping stuffs
+
+		// trying to pass the light's view matrix
+		XMVECTOR lightdirection = XMLoadFloat3(&directionalLight2.Direction);
+		
+		XMMATRIX lightview = 
+			XMMatrixLookToLH(XMVectorSet(0, 0, 0, 0),	// light's position /center of your world
+			lightdirection,								// light's direction
+			XMVectorSet(0, 1, 0, 0));					// Updirection
+
+		XMFLOAT4X4 LightView;
+		XMStoreFloat4x4(&LightView, lightview);
+
+		// trying to pass the light's projection matrix
+		XMFLOAT4X4 LightProjection;
+		XMMATRIX lightprojection = XMMatrixOrthographicLH(100,100,0,100);
+		XMStoreFloat4x4(&LightProjection, lightprojection);
+		
+		VS_Shadow->SetMatrix4x4("world", E[i]->GetMatrix());
+		VS_Shadow->SetMatrix4x4("view", LightView);
+		VS_Shadow->SetMatrix4x4("projection", LightProjection);
+
+	
 
 
 		context->DrawIndexed(

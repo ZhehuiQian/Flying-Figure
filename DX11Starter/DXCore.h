@@ -72,8 +72,8 @@ protected:
 	ID3D11DepthStencilView* depthStencilView;
 
 	/* final project_shadow mapping */
-	ID3D11DepthStencilView* shadowMapDepthView;
-	ID3D11ShaderResourceView* shadowMapSRView;
+	//ID3D11DepthStencilView* shadowMapDepthView;
+	//ID3D11ShaderResourceView* shadowMapSRView;
 	/* final project_shadow mapping */
 
 	// Helper function for allocating a console window

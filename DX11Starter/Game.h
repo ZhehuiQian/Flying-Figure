@@ -94,6 +94,15 @@ private:
 	ID3D11SamplerState* SampleState;
 	// --------------------
 
+	// ---for shadow mapping---
+	ID3D11Texture2D* shadowMapTexture;
+	ID3D11DepthStencilView* DSV_Shadow;
+	ID3D11ShaderResourceView* SRV_Shadow;
+	ID3D11RasterizerState* RS_Shadow;
+	SimpleVertexShader* VS_Shadow;
+	SimplePixelShader* PS_Shadow;
+
+
 	// adding sound!
 	// Sound* sound;
 };
