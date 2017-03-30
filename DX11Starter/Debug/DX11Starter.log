@@ -1,4 +1,7 @@
-﻿  compilation object save succeeded; see E:\Git Repo\Shadow\DX11Starter\Debug\PS_Shadow.cso
-E:\Git Repo\Shadow\DX11Starter\VS_Shadow.hlsl(76,2-14): error X3000: unrecognized identifier 'deviceContext'
-  
-  compilation failed; no code produced
+﻿  Main.cpp
+  Game.cpp
+e:\git repo\shadow\dx11starter\game.cpp(202): warning C4305: 'argument': truncation from 'double' to 'float'
+e:\git repo\shadow\dx11starter\game.cpp(522): error C2248: 'ISimpleShader::deviceContext': cannot access protected member declared in class 'ISimpleShader'
+  e:\git repo\shadow\dx11starter\simpleshader.h(122): note: see declaration of 'ISimpleShader::deviceContext'
+  e:\git repo\shadow\dx11starter\simpleshader.h(61): note: see declaration of 'ISimpleShader'
+  Generating Code...

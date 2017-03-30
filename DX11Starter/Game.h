@@ -95,12 +95,15 @@ private:
 	// --------------------
 
 	// ---for shadow mapping---
-	ID3D11Texture2D* shadowMapTexture;
-	ID3D11DepthStencilView* DSV_Shadow;
-	ID3D11ShaderResourceView* SRV_Shadow;
-	ID3D11RasterizerState* RS_Shadow;
+	ID3D11Texture2D* shadowMapTexture;		// a depth stencil texture
+	ID3D11DepthStencilView* DSV_Shadow;		// depth stecil view
+	ID3D11ShaderResourceView* SRV_Shadow;	// shader resource view
+	ID3D11RasterizerState* RS_Shadow;		// rasterizer state
+	D3D11_VIEWPORT myViewPort;
+
+
 	SimpleVertexShader* VS_Shadow;
-	SimplePixelShader* PS_Shadow;
+	//SimplePixelShader* PS_Shadow;
 
 
 	// adding sound!
